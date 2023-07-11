@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Where To Go </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-image: url("https://photographylife.com/wp-content/uploads/2020/03/Ultra-Wide-Angle-Panoramas-1.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      padding: 20px;
+      text-align: center;
+      position: relative; /* Added */
+    }
+
+    #search-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+
+@media (max-width: 480px) {
+    #search-container {
+      position: static;
+      margin-bottom: 10px;
+    }
+
+    #search-input {
+      width: 100%;
+      height:10px;
+      padding: 5px;
+    }
+
+    #search-container button {
+      margin-left: 0;
+      display: block;
+      width: 100%;
+    }
+  }
+
+#search-input {
+  width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+}
+
+#search-container button {
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#search-container button:hover {
+  background-color: #0056b3;
+}
+
+
+    h1 {
+      color: #fff;
+      margin: 0;
+      font-size: 56px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    h1:hover {
+      transform: scale(1.01);
+    }
+
+    #arabic-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .countries-heading {
+      font-size: 36px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    .country {
+      cursor: pointer;
+      display: inline-block;
+      padding: 45px 60px;
+      font-size: 65px;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+
+    .country:hover {
+      transform: scale(1.1);
+    }
+
+    .kuwait {
+      color: #f2f2f2;
+      font-family: monospace;
+      background-image: url("https://www.edgemiddleeast.com/cloud/2023/01/06/MljiyZjQ-kuWAIT-1-1-1200x800.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .places {
+      display: none;
+      text-align: center;
+    }
+
+    .place {
+      display: inline-block;
+      width: 280px;
+      margin: 20px;
+      padding: 10px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .place:hover {
+      transform: scale(1.1);
+    }
+
+    .place-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .place-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .place-details {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .place-description {
+      color: #777;
+      margin-bottom: 10px;
+      font-size: 18px;
+      text-align: justify;
+    }
+
+    .place-location {
+      color: #333;
+      font-weight: bold;
+    }
+
+    .place-photos {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .place-photo {
+      display: inline-block;
+      width: 150px;
+      height: 100px;
+      margin: 10px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .rating {
+      margin-top: 10px;
+      font-size: 24px;
+      color: #FFC107;
+      text-align: center;
+    }
+  </style>
+  <script>
+    function togglePlacesVisibility() {
+      var places = document.getElementById('places');
+      var placesDisplay = places.style.display;
+      places.style.display = placesDisplay === 'block' ? 'none' : 'block';
+    }
+
+    function showPlaceDetails(placeId) {
+      var placeDetails = document.getElementById('place-details-' + placeId);
+      var placePhotos = document.getElementById('place-photos-' + placeId);
+      var placeDetailsDisplay = placeDetails.style.display;
+      var placePhotosDisplay = placePhotos.style.display;
+
+      if (placeDetailsDisplay === 'block') {
+        placeDetails.style.display = 'none';
+        placePhotos.style.display = 'none';
+      } else {
+        placeDetails.style.display = 'block';
+        placePhotos.style.display = 'block';
+      }
+    }
+
+    function refreshPage() {
+      location.reload();
+    }
+
+    function redirectToArabicVersion() {
+      window.location.href = "wheretogoar.html";
+    }
+
+
+    function search() {
+      // Get the input value from the search bar
+      var query = document.getElementById("search-input").value;
+
+      // Call the searchPlaces function with the entered query
+      searchPlaces(query);
+    }
+    function search() {
+  // Get the input value from the search bar
+  var query = document.getElementById("search-input").value;
+
+  // Check if the query is empty
+  if (query.trim() === '') {
+    // Refresh the page
+    location.reload();
+  } else {
+    // Call the searchPlaces function with the entered query
+    searchPlaces(query);
+  }
+}
+
+    function showDetails(place) {
+      var details = document.getElementById("place" + place + "-details");
+      details.style.display = "block";
+    }
+    function searchPlaces(keyword) {
+  // Get all the place elements
+  const placeElements = document.getElementsByClassName('place');
+
+  // Loop through each place element and check if it contains the keyword
+  for (let i = 0; i < placeElements.length; i++) {
+    const placeElement = placeElements[i];
+    const placeName = placeElement.querySelector('.place-name').innerText.toLowerCase();
+
+    // Hide or show the place based on the keyword
+    if (placeName.includes(keyword.toLowerCase())) {
+      placeElement.style.display = 'block';
+    } else {
+      placeElement.style.display = 'none';
+    }
+  }
+}
+
+// Usage: Call the searchPlaces function with the keyword you want to search
+searchPlaces('Kuwait');
+
+
+    function showPhotos(place) {
+      var photos = document.getElementById("place" + place + "-photos");
+      photos.style.display = "block";
+    }
+    
+  </script>
+</head>
+<body>
+  <header>
+    <h1 onclick="refreshPage()">Where to Go</h1>
+    <div id="arabic-button" onclick="redirectToArabicVersion()">ع</div>
+  </header>
+  <main>
+    <h2 class="countries-heading">Countries</h2>
+    <ul id="countries">
+      <li class="country kuwait" onclick="togglePlacesVisibility()">Kuwait</li>
+    </ul>
+
+    <div id="places" class="places">
+      <h2>Places in Kuwait</h2>
+
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search">
+        <button onclick="search()">Search</button>
+
+
+      <!--متحف عبدالله السالم-->
+      <div class="place" onclick="showPlaceDetails(5)">
+        <img class="place-image" src="https://s.alqabas.com/wp-content/uploads/2018/10/DpXmJSAWkAAn1qk-Copy.jpg" alt="Place Image">
+        <h3 class="place-name">Abdullah Al-Salem Museum</h3>
+        <div class="rating">
+          Rating: 4.6
+        </div>
+      </div>
+      <div id="place-details-5" class="place-details">
+        <p class="place-description">The Abdullah Al-Salem Museum, also known as the Sheikh Abdullah Al-Salem Cultural Centre, is a museum complex located in Kuwait City,The museum complex is named after Sheikh Abdullah Al-Salem Al-Sabah, the 11th ruler of Kuwait, and aims to showcase the history, culture, and scientific achievements of Kuwait and the region. It houses various galleries and exhibitions that cover topics such as natural history, science and technology, fine arts, Islamic art, space exploration, and more.</p>
+        <p class="place-location">Location: <a href="https://goo.gl/maps/U5FCCLnvjubJaStX6" target="_blank">View on Google Maps</a></p>
+        <div id="place-photos-5" class="place-photos">
+          <img class="place-photo" src="https://www.alraimedia.com/raimedia/uploads/images/2022/02/05/1127205.jpg" alt="Photo 1">
+          <img class="place-photo" src="https://www.alraimedia.com/HTTP/mawaqaa/Website/ArticleFiles/Attachments/2018/02/06/20180205194402435.jpg" alt="Photo 2">
+          <img class="place-photo" src="https://media-cdn.tripadvisor.com/media/photo-s/16/ce/e8/85/sheikh-abdullah-al-salem.jpg" alt="Photo 3">
+          <img class="place-photo" src="https://www.alraimedia.com/HTTP/mawaqaa/Website/ArticleFiles/Attachments/2020/01/19/20200118184045816.jpg" alt="Photo 4">
+        </div>
+      </div>
+           
+
+
+      <!--حديقة الشهيد-->
+
+      <div class="place" onclick="showPlaceDetails(4)">
+        <img class="place-image" src="https://safarin.net/wp-content/uploads/2018/04/18-04-04_19-38-22.jpg" alt="Place Image">
+        <h3 class="place-name">al-shaheed park</h3>
+        <div class="rating">
+          Rating: 4.6
+        </div>
+      </div>
+      <div id="place-details-4" class="place-details">
+        <p class="place-description">Al-Shaheed Park is a public park located in Kuwait City, al-shaheed It is one of the largest urban parks in the country and serves as a prominent cultural and leisure destination. The park is dedicated to honoring and commemorating the martyrs of Kuwait, particularly those who lost their lives during the Iraqi invasion of Kuwait in 1990.</p>
+        <p class="place-location">Location: <a href="https://goo.gl/maps/7D9MdiwhUvEB9DwP9" target="_blank">View on Google Maps</a></p>
+        <div id="place-photos-4" class="place-photos">
+          <img class="place-photo" src="https://artravelers.com/tourism/media/images/18/10/22/b1ea5cc588.jpg" alt="Photo 1">
+          <img class="place-photo" src="https://media.safarway.com/content/5513cff9-f21d-4e26-80f5-ba6ee5f6407b_xs.jpg" alt="Photo 2">
+          <img class="place-photo" src="https://i.pinimg.com/originals/53/2f/a2/532fa28a1b0920bf90017362b4b5d44b.jpg" alt="Photo 3">
+          <img class="place-photo" src="https://alkhaleejonline.net/sites/default/files/styles/gallery/public/2017-07/1501345516140404600.jpg?itok=-YQzemHN" alt="Photo 4">
+        </div>
+      </div>
+            
+
+      <!--الافنيوز-->
+      <div class="place" onclick="showPlaceDetails(1)">
+        <img class="place-image" src="https://static2.gensler.com/uploads/image/77973/project-the-avenues-1024x576_1663868673.jpg" alt="The avenues">
+        <h3 class="place-name">The Avenues Mall</h3>
+        <div class="rating">
+          Rating: 4.7
+        </div>
+      </div>
+
+      <div id="place-details-1" class="place-details">
+        <p class="place-description">The Avenues Mall is a large shopping mall located in Kuwait City, The avenues It is one of the largest malls in the Middle East and is known for its extensive range of international and luxury brands, as well as its diverse dining and entertainment options.</p>
+        <p class="place-location">Location: <a href="https://goo.gl/maps/BarGgPXR93khSvvz7" target="_blank">View on Google Maps</a></p>
+        <div id="place-photos-1" class="place-photos">
+          <img class="place-photo" src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/09/a4/36/the-avenues.jpg?w=1200&h=-1&s=1" alt="Photo 1">
+          <img class="place-photo" src="https://the-avenues.com/storage/about-sections/districts-photos-13-1469034300.jpg" alt="Photo 2">
+          <img class="place-photo" src="https://live.staticflickr.com/2830/13653512455_7f715bd9e7_h.jpg" alt="Photo 3">
+          <img class="place-photo" src="https://www.visit-kuwait.com/Portals/0/Images/living/shopping/kuwait-avenues-mall.jpg" alt="Photo 4">
+        </div>
+      </div>
+
+
+
+<!-- المباركية -->
+<div class="place" onclick="showPlaceDetails(2)">
+  <img class="place-image" src="https://www.urtrips.com/wp-content/uploads/2022/06/souk-mubarakiya-kuwait.jpg" alt="Al-Mubarakiyah">
+  <h3 class="place-name">Al-Mubarakiyah</h3>
+  <div class="rating">
+    Rating: 4.5
+  </div>
+</div>
+
+<div id="place-details-2" class="place-details">
+  <p class="place-description">Al-Mubarakiyah is an old traditional Kuwaiti market, and it is one of the most famous and best places that every tourist should visit in Kuwait. It offers a vibrant and lively atmosphere where visitors can explore various shops, street vendors, and traditional restaurants. The market is known for its authentic Kuwaiti goods, including clothing, accessories, spices, and handicrafts. It is also a great place to experience the rich cultural heritage of Kuwait.</p>
+  <p class="place-location">Location: <a href="https://goo.gl/maps/R8NA3FDaFv7xAnCS8" target="_blank">View on Google Maps</a></p>
+  <div id="place-photos-2" class="place-photos">
+    <img class="place-photo" src="https://news.gov.kw/Files/News/SREPORTS/2b519531-a4ac-4008-9bf3-76149141aeb7.jpg" alt="Photo 1">
+    <img class="place-photo" src="https://s.alqabas.com/wp-content/uploads/2019/01/1-195.jpg" alt="Photo 2">
+    <img class="place-photo" src="https://www.kuna.net.kw/NewsPictures/2023/2/5/966fc2c2-c555-4f87-a407-300a420bdbf8.jpg" alt="Photo 3">
+    <img class="place-photo" src="https://cdn4.premiumread.com/?url=https://www.alroeya.com/uploads/images/2022/04/01/1529776.jpg&w=w850&q=100&f=jpg" alt="Photo 4">
+  </div>
+</div>
+
+
+      <div id="place-details-1" class="place-details">
+        <p class="place-description">Al-Mubarakiyah is an old traditional Kuwaiti market, and it is one of the most famous and bestplaces that every tourist should visit in Kuwait. It offers a vibrant and lively atmosphere where visitors can explore various shops, street vendors, and traditional restaurants. The market is known for its authentic Kuwaiti goods, including clothing, accessories, spices, and handicrafts. It is also a great place to experience the rich cultural heritage of Kuwait.</p>
+        <p class="place-location">Location: <a href="https://goo.gl/maps/R8NA3FDaFv7xAnCS8" target="_blank">View on Google Maps</a></p>
+        <div id="place-photos-1" class="place-photos">
+          <img class="place-photo" src="https://news.gov.kw/Files/News/SREPORTS/2b519531-a4ac-4008-9bf3-76149141aeb7.jpg" alt="Photo 1">
+          <img class="place-photo" src="https://s.alqabas.com/wp-content/uploads/2019/01/1-195.jpg" alt="Photo 2">
+          <img class="place-photo" src="https://www.kuna.net.kw/NewsPictures/2023/2/5/966fc2c2-c555-4f87-a407-300a420bdbf8.jpg" alt="Photo 3">
+          <img class="place-photo" src="https://cdn4.premiumread.com/?url=https://www.alroeya.com/uploads/images/2022/04/01/1529776.jpg&w=w850&q=100&f=jpg" alt="Photo 4">
+        </div>
+      </div>
+
+      <!--ابراج الكويت-->
+  
+      <div class="place" onclick="showPlaceDetails(3)">
+        <img class="place-image" src="https://planetofhotels.com/guide/sites/default/files/styles/node__blog_post__bp_banner/public/live_banner/Kuwait-city_0.jpg" alt="Kuwait Towers">
+        <h3 class="place-name">Kuwait Towers</h3>
+        <div class="rating">
+          Rating: 4.5
+        </div>
+      </div>
+    </div>
+
+
+    <div id="place-details-3" class="place-details">
+      <p class="place-description">The Kuwait Towers are iconic landmarks in Kuwait City. These towers are a group of three slender towers with unique designs and are considered a symbol of modern Kuwait. The main tower offers a panoramic view of the city from its observation deck, while the other two towers contain a restaurant and a water storage facility. The Kuwait Towers are a must-visit attraction for tourists to enjoy breathtaking views and experience Kuwait's modern architecture.</p>
+      <p class="place-location">Location: <a href="https://goo.gl/maps/E8x4UF82Dagrnmua7" target="_blank">View on Google Maps</a></p>
+      <div id="place-photos-3" class="place-photos">
+        <img class="place-photo" src="https://egyptiangeographic.com/uploads/news/egyptiangeographic.com_15740819681.jpg" alt="Photo 1">
+        <img class="place-photo" src="https://alwatan.ae/wp-content/uploads/2020/09/30-09-2020a-83.jpg" alt="Photo 2">
+        <img class="place-photo" src="data:image/jpeg;base64,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" alt="Photo 3">
+        <img class="place-photo" src="https://scontent.fkwi6-2.fna.fbcdn.net/v/t1.6435-9/86320746_609266456563217_3683681278118330368_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=973b4a&_nc_ohc=_SDmD4x6XjsAX-hf_L_&_nc_ht=scontent.fkwi6-2.fna&oh=00_AfB4sXQgHkFuBkV4lF46xPhq3dEy0fadp4MURAnBOYmAeA&oe=64D328C9" alt="Photo 4">
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
